@@ -26,4 +26,7 @@ public class FicheNote {
 
     @Column(name = "creationDate",nullable = false )
     private Instant dateCreation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Teacher teacher;
 }

@@ -1,0 +1,98 @@
+<div class="eleves" th:fragment="eleves-content" id="form-eleve" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="board-top">
+        <h1>Elèves <span>(<span th:text="${studentCount}"></span>)</span></h1>
+        <a class="modal-open" href="#form-eleve" onclick="showSection(event, 'form-eleve')">
+            <span class="plus">+</span>Nouvel eleve
+        </a>
+    </div>
+    <div class="tableau">
+        <div class="title row">
+            <p>Nom</p>
+            <p>Prénom</p>
+            <p>Genre</p>
+            <p>Classe</p>
+            <p>Matricule</p>
+            <p>Date Naissance</p>
+            <p>Téléphone</p>
+            <p class="action">Actions</p>
+        </div>
+
+
+        <div th:each="student : ${students}" class="row">
+            <p th:text="${student.nom}"></p>
+            <p th:text="${student.prenom}"></p>
+            <p th:text="${student.genre}"></p>
+            <p th:text="${student.classe}"></p>
+            <p th:text="${student.matricule}"></p>
+            <p th:text="${student.age}"></p>
+            <p th:text="${student.tel}"></p>
+            <button type="button" th:onclick="'openmodify(' + ${student.id} + ')'">Modifier</button>
+            <button type="button" th:onclick="'opendelete(' + ${student.id} + ')'">Supprimer</button>
+        </div>
+    </div>
+
+
+
+
+    <div class="menu-eleve-modify">
+        <span class="closemodal" onclick="closemodify()">< Retour</span>
+        <h2>Modifier un éleve</h2>
+        <form  class="form-add">
+            <div class="form-container">
+                <div class="left-form">
+                    <label for="name">Nom</label>
+                    <input name="name" type="text" id="name" placeholder="Entrez le nom">
+
+                    <label for="firstname">Prénom</label>
+                    <input name="firstname" type="text" id="firstname" placeholder="Entrez le prénom">
+
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="gender" value="homme"> Homme
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="femme"> Femme
+                        </label>
+                    </div>
+
+                    <label for="matricule">Matricule</label>
+                    <input name="matricule" type="text" id="matricule" placeholder="Entrez le matricule">
+
+                    <label for="date">Date de naissance</label>
+                    <input type="date" name="date" id="date">
+                </div>
+
+                <div class="right-form">
+                    <label for="classe">Classe</label>
+                    <select name="classe" id="classe">
+                        <option value="">---Sélectionner la classe---</option>
+                        <option value="2nd">2nd</option>
+                        <option value="1re">1re</option>
+                        <option value="Tle">Tle</option>
+                    </select>
+
+                    <label for="tel">Numéro de téléphone</label>
+                    <input type="tel" name="tel" id="tel" placeholder="Entrez le numéro de téléphone">
+
+                    <label for="ville">Ville</label>
+                    <input type="text" name="ville" id="ville" placeholder="Entrez la ville">
+                </div>
+            </div>
+
+            <div class="form-buttons">
+                <button class="btn cancel" type="button">Annuler</button>
+                <button class="btn save" type="submit">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+    <div class="delete-modal">
+        <div class="delete-modal-content">
+            <h2>Attention!!!</h2>
+            <p>Voulez vous vraiment supprimer cet élève</p>
+            <div class="flex">
+                <button class="modal-btn-delete non" type="button" onclick="closedelete()">Non</button>
+                <button class="modal-btn-delete oui" type="button" onclick="closedelete()">Oui</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,17 +5,21 @@ package ci.digitalacademy.monetab.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Table
+//@DiscriminatorValue(value = "teacher")
 public class Teacher extends Person {
-
 
     @Column(nullable = false)
     private String matiere;
 
+    @Column(nullable = false)
+    private Boolean vacant;
 
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "teacher")
+    private Set<FicheNote> ficheNote;
 }

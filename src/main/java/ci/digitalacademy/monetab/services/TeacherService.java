@@ -11,4 +11,5 @@ public interface TeacherService {
     Optional<Teacher> findOne(Long id);
     List<Teacher> findAll();
     void delete(Long id);
+    long countTeachers();
 }

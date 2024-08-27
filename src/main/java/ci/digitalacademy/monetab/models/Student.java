@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "student")
+
+//@DiscriminatorValue(value = "student")
 public class Student extends Person {
 
     @Column(nullable = false)
     private String matricule;
+
+    @Column(nullable = false)
+    private String classe;
 }

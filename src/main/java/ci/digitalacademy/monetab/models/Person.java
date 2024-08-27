@@ -1,25 +1,31 @@
 package ci.digitalacademy.monetab.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-
+@Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@MappedSuperclass
-public class Person {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "person_type")
+public abstract class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name ="lastname", nullable = false)
     private String nom;
+    @Column(name ="firstname",nullable = false)
     private String prenom;
+    @Column(name = "telephone", nullable = false)
+    private String tel;
+    @Column(nullable=false)
+    private String age;
+    @Column(nullable = false)
+    private String genre;
+    @Column(nullable=false)
     private Instant dateCreation;
 }

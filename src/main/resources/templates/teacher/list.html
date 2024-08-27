@@ -1,0 +1,34 @@
+<div th:fragment="professeurs-content" class="professeur" id="page-professeur"
+     xmlns:th="http://www.w3.org/1999/xhtml"
+>
+    <div class="board-top">
+        <h1>Professeurs <span>(<span th:text="${teacherCount}"></span>)</span></h1>
+        <a class="modal-open" href="#form-professeur" onclick="showSection(event, 'form-professeur')">
+            <span class="plus">+</span>Nouveau Professeur
+        </a>
+    </div>
+    <div class="tableau">
+        <div class="title row">
+            <p>Nom</p>
+            <p>Prénom</p>
+            <p>Matière</p>
+            <p>Vacant</p>
+            <p>Âge</p>
+            <p>Téléphone</p>
+            <p class="action">Actions</p>
+        </div>
+        <div th:each="teacher : ${teachers}" class="row">
+            <p th:text="${teacher.nom}"></p>
+            <p th:text="${teacher.prenom}"></p>
+            <p th:text="${teacher.matiere}"></p>
+            <p th:text="${teacher.vacant} ? 'Oui' : 'Non'"></p>
+            <p th:text="${teacher.age}"></p>
+            <p th:text="${teacher.tel}"></p>
+            <button type="button" onclick="openmodify()">Modifier</button>
+            <button type="button" onclick="opendelete()">Supprimer</button>
+        </div>
+    </div>
+    <script th:src="@{/js/js.js}"></script>
+</div>
+
+

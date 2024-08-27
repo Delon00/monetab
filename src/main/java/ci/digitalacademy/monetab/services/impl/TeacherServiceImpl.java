@@ -52,4 +52,9 @@ public class TeacherServiceImpl implements TeacherService {
     public void delete(Long id) {
         teacherRepository.deleteById(id);
     }
+
+    @Override
+    public long countTeachers() {
+        return teacherRepository.count();
+    }
 }

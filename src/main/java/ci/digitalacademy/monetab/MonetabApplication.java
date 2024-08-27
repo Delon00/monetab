@@ -1,8 +1,9 @@
 package ci.digitalacademy.monetab;
 
-import ci.digitalacademy.monetab.models.Adress;
-import ci.digitalacademy.monetab.models.User;
+import ci.digitalacademy.monetab.models.*;
 import ci.digitalacademy.monetab.services.AdressService;
+import ci.digitalacademy.monetab.services.FicheNoteService;
+import ci.digitalacademy.monetab.services.StudentService;
 import ci.digitalacademy.monetab.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +20,10 @@ public class MonetabApplication implements CommandLineRunner {
 	private UserService userService;
 	@Autowired
 	private AdressService adressService;
+	@Autowired
+	private FicheNoteService ficheNoteService;
+	@Autowired
+	private StudentService studentService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MonetabApplication.class, args);
@@ -26,13 +31,35 @@ public class MonetabApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User user = new User(null,"Bakus","azerty", Instant.now(),null);
-		Adress adress = new Adress(null,"Côte d'ivoire","Abidjan", "Cocody");
+
+		User user = new User(null,"admin","admin", Instant.now(),null);
+
+		Student student1 = new Student();
+		student1.setNom("koffi");
+		student1.setPrenom("paul");
+		student1.setClasse("L1");
+		student1.setAge("2024-08-08");
+		student1.setTel("0140101616");
+		student1.setGenre("M");
+		student1.setMatricule("225ABJ");
+		student1.setDateCreation(Instant.now());
+		studentService.save(student1);
+		Student student2 = new Student();
+		student2.setNom("Soro");
+		student2.setPrenom("Marc");
+		student2.setClasse("L1");
+		student2.setAge("2024-08-08");
+		student2.setTel("0140101016");
+		student2.setGenre("M");
+		student2.setMatricule("225ABJ");
+		student2.setDateCreation(Instant.now());
+		studentService.save(student2);
 		userService.save(user);
-		adressService.save(adress);
-		List<User>users = userService.findAll();
-		List<Adress>adresse = adressService.findAll();
+		//Teacher teacher = new Teacher();
+		//List<User>users = userService.findAll();
+		//List<Adress>adresse = adressService.findAll();
+		//List<FicheNote>ficheNotes = ficheNoteService.findAll();
 		System.out.println(user);
-		System.out.println(adress);
+
 	}
 }

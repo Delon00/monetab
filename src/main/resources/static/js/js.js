@@ -1,3 +1,4 @@
+
 function showSection(event, section) {
     if (event) {
         event.preventDefault();
@@ -8,7 +9,7 @@ function showSection(event, section) {
         link.classList.remove('current');
     });
 
-    if (event) {
+    if (event && event.target) {
         event.target.classList.add('current');
     } else {
         const defaultLink = document.querySelector(`a[href="#${section}"]`);
@@ -17,41 +18,54 @@ function showSection(event, section) {
         }
     }
 
-    let sectionUrl = '';
+    loadSection(section);
+}
 
-    switch(section) {
+function loadSection(section) {
+    let sectionUrl = '';
+    console.log(section)
+    switch (section) {
         case 'page-dash':
-            sectionUrl = 'dashboard/composant/dashboard :: dashboard-content';
+            sectionUrl = 'dashboard';
             break;
         case 'page-eleve':
-            sectionUrl = 'dashboard/composant/eleves :: eleves-content';
+            sectionUrl = 'students';
             break;
         case 'page-professeur':
-            sectionUrl = 'dashboard/composant/professeurs :: professeurs-content';
+            sectionUrl = 'teachers';
             break;
+        case 'form-professeur':
+             sectionUrl = 'teachers/formTeacher';
+             break;
+        case 'form-eleve':
+              sectionUrl = 'students/formStudent';
+               break;
+        case 'form-user':
+               sectionUrl = 'users/formUser';
+               break;
         case 'page-utilisateur':
-            sectionUrl = 'dashboard/composant/utilisateurs :: utilisateurs-content';
+            sectionUrl = 'users';
             break;
         case 'page-rapport':
-            sectionUrl = 'dashboard/composant/rapports :: rapports-content';
+            sectionUrl = 'rapports';
             break;
         default:
             sectionUrl = '';
     }
 
-    if (sectionUrl) {
+    if (sectionUrl !== '') {
         fetch(sectionUrl)
             .then(response => response.text())
             .then(html => {
                 document.getElementById('main-content').innerHTML = html;
-            });
+            })
+            .catch(error => console.log('Error loading section:', error));
     }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     showSection(null, 'page-dash');
 });
-
 
 
 

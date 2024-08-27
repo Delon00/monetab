@@ -28,7 +28,7 @@ public class AuthController {
         }
 
         if ("admin".equals(username) && "admin".equals(password)) {
-            return "redirect:/dashboard";
+            return "redirect:/home";
         } else {
             model.addAttribute("error", "Identifiant ou Mot de passe incorrect.");
             return "auth/login";
