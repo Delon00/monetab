@@ -13,83 +13,9 @@
         <div th:each="user : ${users}" class="row">
             <p th:text="${user.pseudo}"></p>
             <p th:text="${user.dateCreation}"></p>
-            <button type="button" onclick="openmodify()">Modifier</button>
+            <button type="button" onclick="openModifyUser()">Modifier</button>
         </div>
     </div>
 
-    <div class="menu-eleve">
-        <span class="closemodal" onclick="closemodal()">< Retour</span>
-        <h2>Ajouter un utilisateur</h2>
 
-        <form  th:action="@{/dashboard/addUser}" method="post" class="form-add">
-            <div class="form-container">
-                <div class="">
-                    <label for="pseudo">Pseudo</label>
-                    <input name="pseudo" type="text" id="pseudo" placeholder="Entrez un pseudo">
-
-                    <label for="password">Mot de passe</label>
-                    <input name="password" type="password" id="password" placeholder="******">
-
-                    <label for="password-confirm">Mot de passe</label>
-                    <input name="password-confirm" type="password" id="password-confirm" placeholder="******">
-                </div>
-            </div>
-
-            <div class="form-buttons">
-                <button class="btn cancel" type="button">Annuler</button>
-                <button class="btn save" type="submit">Enregistrer</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="menu-eleve-modify">
-        <span class="closemodal" onclick="closemodify()">< Retour</span>
-        <h2>Modifier un utilisateur</h2>
-        <form class="form-add">
-            <div class="form-container">
-                <div class="left-form">
-                    <label for="name">Nom</label>
-                    <input name="name" type="text" id="name" placeholder="Entrez le nom">
-
-                    <label for="firstname">Prénom</label>
-                    <input name="firstname" type="text" id="firstname" placeholder="Entrez le prénom">
-
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="gender" value="homme"> Homme
-                        </label>
-                        <label>
-                            <input type="radio" name="gender" value="femme"> Femme
-                        </label>
-                    </div>
-
-                    <label for="matricule">Matricule</label>
-                    <input name="matricule" type="text" id="matricule" placeholder="Entrez le matricule">
-
-                    <label for="date">Date de naissance</label>
-                    <input type="date" name="date" id="date">
-                </div>
-
-                <div class="right-form">
-                    <label for="classe">Classe</label>
-                    <select name="classe" id="classe">
-                        <option value="">---Sélectionner la classe---</option>
-                        <option value="2nd">2nd</option>
-                        <option value="1re">1re</option>
-                        <option value="Tle">Tle</option>
-                    </select>
-
-                    <label for="tel">Numéro de téléphone</label>
-                    <input type="tel" name="tel" id="tel" placeholder="Entrez le numéro de téléphone">
-
-                    <label for="ville">Ville</label>
-                    <input type="text" name="ville" id="ville" placeholder="Entrez la ville">
-                </div>
-            </div>
-            <div class="form-buttons">
-                <button class="btn cancel" type="button">Annuler</button>
-                <button class="btn save" type="submit">Enregistrer</button>
-            </div>
-        </form>
-    </div>
 </div>

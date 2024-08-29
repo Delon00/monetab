@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/")
 public class AuthController {
+
     @GetMapping
     public String index(Model model) {
-        //User user = new User(1, "Séraphin", "Kakou");
-        //model.addAttribute("student", user);
+
+
         return "auth/login";
     }
 

@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="style.css">
+<div th:fragment="sidebar"  xmlns:th="http://www.w3.org/1999/xhtml">
+        <div>
+            <h1>Mon Etab</h1>
+            <hr>
+            <ul class="sidebar-link-container">
+                <li><a class="sidebar-link current" th:href="@{/homes}" >Tableau de bord</a></li>
+                <li><a class="sidebar-link" th:href="@{/students}">Élèves</a></li>
+                <li><a class="sidebar-link" th:href="@{/teachers}">Professeur</a></li>
+                <li><a class="sidebar-link" th:href="@{/users}">Utilisateur</a></li>
+                <li><a class="sidebar-link" th:href="@{/reports}">Rapport</a></li>
+            </ul>
+        </div>
+        <div>
+            <hr>
+            <a class="sidebar-link logout" th:href="@{/}" >Deconnexion</a>
+        </div>
+</div>

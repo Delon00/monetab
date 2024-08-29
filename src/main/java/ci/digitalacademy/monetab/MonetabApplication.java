@@ -2,6 +2,7 @@ package ci.digitalacademy.monetab;
 
 import ci.digitalacademy.monetab.models.*;
 import ci.digitalacademy.monetab.services.AdressService;
+import ci.digitalacademy.monetab.services.DTO.StudentDTO;
 import ci.digitalacademy.monetab.services.FicheNoteService;
 import ci.digitalacademy.monetab.services.StudentService;
 import ci.digitalacademy.monetab.services.UserService;
@@ -34,7 +35,7 @@ public class MonetabApplication implements CommandLineRunner {
 
 		User user = new User(null,"admin","admin", Instant.now(),null);
 
-		Student student1 = new Student();
+		StudentDTO student1 = new StudentDTO();
 		student1.setNom("koffi");
 		student1.setPrenom("paul");
 		student1.setClasse("L1");
@@ -44,7 +45,8 @@ public class MonetabApplication implements CommandLineRunner {
 		student1.setMatricule("225ABJ");
 		student1.setDateCreation(Instant.now());
 		studentService.save(student1);
-		Student student2 = new Student();
+
+		StudentDTO student2 = new StudentDTO();
 		student2.setNom("Soro");
 		student2.setPrenom("Marc");
 		student2.setClasse("L1");
@@ -55,6 +57,7 @@ public class MonetabApplication implements CommandLineRunner {
 		student2.setDateCreation(Instant.now());
 		studentService.save(student2);
 		userService.save(user);
+
 		//Teacher teacher = new Teacher();
 		//List<User>users = userService.findAll();
 		//List<Adress>adresse = adressService.findAll();

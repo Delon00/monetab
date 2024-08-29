@@ -1,17 +1,20 @@
 package ci.digitalacademy.monetab.controller;
 
 
+import ci.digitalacademy.monetab.models.Student;
 import ci.digitalacademy.monetab.models.Teacher;
 import ci.digitalacademy.monetab.models.User;
+import ci.digitalacademy.monetab.services.DTO.UserDTO;
 import ci.digitalacademy.monetab.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,10 +34,53 @@ public class UserController {
 
 
     @GetMapping("/formUser")
-    public String showTeacherForm(Model model){
+    public String showUserForm(Model model){
         log.debug("");
         model.addAttribute("user", new User());
         return "user/form";
     }
 
+    @PostMapping
+    public String saveUser(UserDTO user, Model model) {
+        log.debug("Request to save user");
+        user.setDateCreation(Instant.now());
+        userService.save(user);
+        model.addAttribute("message", "Utilisateur ajouté avec succès!");
+
+        return "dashboard/home";
+        //return "student/form :: form-eleve";
+    }
+
+    @GetMapping("/modify/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Optional<User> user = userService.findOne(id);
+        if (user.isPresent()){
+            model.addAttribute("user", user.get());
+            return "student/modifyUserForm";
+        }
+        else {
+            return "redirect:/users";
+        }
+    }
+
+
+    @PostMapping("/update")
+    public String updateStudent(@ModelAttribute("user") User user, Model model) {
+        log.debug("Request to update user");
+        user.setDateCreation(Instant.now());
+        userService.update(user);
+        model.addAttribute("message", "Utilisateur mis à jour avec succès!");
+
+        return "redirect:/home";
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id, Model model) {
+        log.debug("Request to delete user");
+        userService.delete(id);
+        model.addAttribute("message", "Utilisateur supprimé avec succès!");
+
+        return "redirect:/home";
+    }
 }

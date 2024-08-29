@@ -2,6 +2,7 @@ package ci.digitalacademy.monetab.services.impl;
 
 import ci.digitalacademy.monetab.models.Student;
 import ci.digitalacademy.monetab.repository.StudentRepository;
+import ci.digitalacademy.monetab.services.DTO.StudentDTO;
 import ci.digitalacademy.monetab.services.StudentService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,33 +21,45 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
 
     @Override
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO save(StudentDTO studentDTO) {
+        Student student = convertToEntity(studentDTO);
+        student = studentRepository.save(student);
+        return convertToDTO(student);
     }
 
     @Override
     public Student update(Student student) {
-        log.debug("Requête pour mettre à jour l'étudiant {}", student);
-        return findOne(student.getId())
+        return null;
+    }
+
+    @Override
+    public StudentDTO update(StudentDTO studentDTO) {
+        log.debug("Requête pour mettre à jour l'étudiant {}", studentDTO);
+        return studentRepository.findById(studentDTO.getId())
                 .map(existingStudent -> {
-                    existingStudent.setNom(student.getNom());
-                    existingStudent.setPrenom(student.getPrenom());
-                    existingStudent.setDateCreation(student.getDateCreation());
-                    existingStudent.setMatricule(student.getMatricule());
-                    return save(existingStudent);
+                    existingStudent.setNom(studentDTO.getNom());
+                    existingStudent.setPrenom(studentDTO.getPrenom());
+                    existingStudent.setDateCreation(studentDTO.getDateCreation());
+                    existingStudent.setMatricule(studentDTO.getMatricule());
+                    existingStudent = studentRepository.save(existingStudent);
+                    return convertToDTO(existingStudent);
                 })
                 .orElseThrow(() -> new EntityNotFoundException
-                        ("Aucun étudiant avec cet id n'a été retrouvé " + student.getId()));
+                        ("Aucun étudiant avec cet id n'a été retrouvé " + studentDTO.getId()));
     }
 
     @Override
-    public Optional<Student> findOne(Long id) {
-        return studentRepository.findById(id);
+    public Optional<StudentDTO> findOne(Long id) {
+        return studentRepository.findById(id)
+                .map(this::convertToDTO);
     }
 
     @Override
-    public List<Student> findAll() {
-        return studentRepository.findAll();
+    public List<StudentDTO> findAll() {
+        return studentRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -58,4 +72,32 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.count();
     }
 
+    private Student convertToEntity(StudentDTO studentDTO) {
+        Student student = new Student();
+        student.setId(studentDTO.getId());
+        student.setNom(studentDTO.getNom());
+        student.setPrenom(studentDTO.getPrenom());
+        student.setGenre(studentDTO.getGenre());
+        student.setAge(studentDTO.getAge());
+        student.setClasse(studentDTO.getClasse());
+        student.setDateCreation(studentDTO.getDateCreation());
+        student.setMatricule(studentDTO.getMatricule());
+        student.setTel(studentDTO.getTel());
+        return student;
+    }
+
+    private StudentDTO convertToDTO(Student student) {
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(student.getId());
+        studentDTO.setNom(student.getNom());
+        studentDTO.setPrenom(student.getPrenom());
+        studentDTO.setGenre(student.getGenre());
+        studentDTO.setAge(student.getAge());
+        studentDTO.setClasse(student.getClasse());
+        studentDTO.setDateCreation(student.getDateCreation());
+        studentDTO.setMatricule(student.getMatricule());
+        studentDTO.setTel(student.getTel());
+        return studentDTO;
+    }
 }
+

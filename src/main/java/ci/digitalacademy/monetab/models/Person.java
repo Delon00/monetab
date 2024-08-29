@@ -11,7 +11,7 @@ import java.time.Instant;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 //@Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "person_type")
-public abstract class Person {
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

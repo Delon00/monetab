@@ -2,14 +2,16 @@ package ci.digitalacademy.monetab.services.impl;
 
 import ci.digitalacademy.monetab.models.Teacher;
 import ci.digitalacademy.monetab.repository.TeacherRepository;
+import ci.digitalacademy.monetab.services.DTO.TeacherDTO;
+import ci.digitalacademy.monetab.services.Mapper.TeacherMapper;
 import ci.digitalacademy.monetab.services.TeacherService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,35 +19,37 @@ import java.util.Optional;
 public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
+    private final TeacherMapper teacherMapper;
 
     @Override
-    public Teacher save(Teacher teacher) {
-        return teacherRepository.save(teacher);
+    public TeacherDTO save(TeacherDTO teacherDTO) {
+        log.debug("request to save: {}", teacherDTO);
+        Teacher teacher = teacherMapper.toEntity(teacherDTO);
+        teacher = teacherRepository.save(teacher);
+        return teacherMapper.toDto(teacher);
     }
 
     @Override
-    public Teacher update(Teacher teacher) {
-        log.debug("Requête pour mettre à jour l'enseignant {}", teacher);
-        return findOne(teacher.getId())
-                .map(existingTeacher -> {
-                    existingTeacher.setNom(teacher.getNom());
-                    existingTeacher.setPrenom(teacher.getPrenom());
-                    existingTeacher.setDateCreation(teacher.getDateCreation());
-                    existingTeacher.setMatiere(teacher.getMatiere());
-                    return save(existingTeacher);
-                })
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Aucun enseignant avec cet id n'a été retrouvé " + teacher.getId()));
+    public TeacherDTO update(TeacherDTO teacherDTO) {
+        log.debug("Requête pour mettre à jour l'enseignant {}", teacherDTO);
+        return teacherRepository.findById(teacherDTO.getId()).map(existingTeacher -> {
+            existingTeacher.setNom(teacherDTO.getNom());
+            existingTeacher.setPrenom(teacherDTO.getPrenom());
+            existingTeacher = teacherRepository.save(existingTeacher);
+            return teacherMapper.toDto(existingTeacher);
+        }).orElseThrow(() -> new RuntimeException("Teacher not found"));
     }
 
     @Override
-    public Optional<Teacher> findOne(Long id) {
-        return teacherRepository.findById(id);
+    public Optional<TeacherDTO> findOne(Long id) {
+        return teacherRepository.findById(id).map(teacherMapper::toDto);
     }
 
     @Override
-    public List<Teacher> findAll() {
-        return teacherRepository.findAll();
+    public List<TeacherDTO> findAll() {
+        return teacherRepository.findAll().stream()
+                .map(teacherMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

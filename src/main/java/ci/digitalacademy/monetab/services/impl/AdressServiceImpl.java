@@ -3,7 +3,9 @@ package ci.digitalacademy.monetab.services.impl;
 import ci.digitalacademy.monetab.models.Adress;
 import ci.digitalacademy.monetab.repository.AdressRepository;
 import ci.digitalacademy.monetab.services.AdressService;
-import jakarta.persistence.EntityNotFoundException;
+import ci.digitalacademy.monetab.services.DTO.AdressDTO;
+import ci.digitalacademy.monetab.services.Mapper.AdressMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,37 +20,41 @@ public class AdressServiceImpl implements AdressService {
 
     private final AdressRepository adressRepository;
 
+
     @Override
-    public Adress save(Adress adress) {
-        return adressRepository.save(adress);
+    public AdressDTO save(AdressDTO adressDTO) {
+        log.debug("request to save: {}", adressDTO);
+        Adress address = AdressMapper.toEntity(adressDTO);
+        address = adressRepository.save(address);
+        return AdressMapper.toDto(address);
     }
 
     @Override
-    public Adress update(Adress adress) {
-        log.debug("Requête pour mettre à jour l'adresse {}", adress);
-        return findOne(adress.getId())
-                .map(existingAdress -> {
-                    existingAdress.setStreet(adress.getStreet());
-                    existingAdress.setCity(adress.getCity());
-                    existingAdress.setCountry(adress.getCountry());
-                    return save(existingAdress);
-                })
-                .orElseThrow(() -> new EntityNotFoundException
-                        ("Aucune adresse avec cet id n'a été retrouvée " + adress.getId()));
+    public AdressDTO update(AdressDTO adress) {
+        return findOne(adress.getId()).map(existingAddress -> {
+            existingAddress.setStreet(adress.getStreet());
+            existingAddress.setCity(adress.getCity());
+            return save(existingAddress);
+        }).orElseThrow(() -> new RuntimeException("Address not found"));
     }
 
     @Override
-    public Optional<Adress> findOne(Long id) {
-        return adressRepository.findById(id);
+    public Optional<AdressDTO> findOne(Long id) {
+        return adressRepository.findById(id).map(address -> {
+            return AdressMapper.toDto(address);
+        });
     }
 
     @Override
-    public List<Adress> findAll() {
-        return adressRepository.findAll();
+    public List<AdressDTO> findAll() {
+        return adressRepository.findAll().stream().map(adress -> {
+            return AdressMapper.toDto(adress);
+        }).toList();
     }
 
     @Override
     public void delete(Long id) {
         adressRepository.deleteById(id);
+
     }
 }

@@ -5,6 +5,7 @@ import ci.digitalacademy.monetab.models.Student;
 import ci.digitalacademy.monetab.models.Teacher;
 import ci.digitalacademy.monetab.repository.StudentRepository;
 import ci.digitalacademy.monetab.repository.TeacherRepository;
+import ci.digitalacademy.monetab.services.DTO.PersonDTO;
 import ci.digitalacademy.monetab.services.PersonService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,16 @@ public class PersonServiceImpl implements PersonService {
         } else if (person instanceof Teacher) {
             return teacherRepository.save((Teacher) person);
         }
+        return null;
+    }
+
+    @Override
+    public PersonDTO save(PersonDTO person) {
+        return null;
+    }
+
+    @Override
+    public PersonDTO update(PersonDTO person) {
         return null;
     }
 

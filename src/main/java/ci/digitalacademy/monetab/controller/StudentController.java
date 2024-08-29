@@ -1,6 +1,7 @@
 package ci.digitalacademy.monetab.controller;
 
 import ci.digitalacademy.monetab.models.Student;
+import ci.digitalacademy.monetab.services.DTO.StudentDTO;
 import ci.digitalacademy.monetab.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class StudentController {
 
     @GetMapping
     public String showStudentList(Model model) {
-        final List<Student> finalStudent = studentService.findAll();
+        final List<StudentDTO> finalStudent = studentService.findAll();
         model.addAttribute("students", finalStudent);
         model.addAttribute("student", new Student());
 
@@ -41,36 +42,39 @@ public class StudentController {
     }
 
     @PostMapping
-    public String saveStudent(Student student, Model model) {
+    public String saveStudent(StudentDTO student, Model model) {
         log.debug("Request to save student");
         student.setDateCreation(Instant.now());
         studentService.save(student);
         model.addAttribute("message", "Élève ajouté avec succès!");
 
         return "dashboard/home";
+        //return "student/form :: form-eleve";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/modify/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
-        Optional<Student> student = studentService.findOne(id);
+        Optional<StudentDTO> student = studentService.findOne(id);
         if (student.isPresent()){
-            model.addAttribute("student", student);
-            return "student/form";
+            model.addAttribute("student", student.get());
+            return "student/modifyStudentForm";
         }
         else {
             return "redirect:/students";
         }
-
     }
 
+
     @PostMapping("/update")
-    public String updateStudent(Student student, Model model) {
+    public String updateStudent(@ModelAttribute("student") Student student, Model model) {
         log.debug("Request to update student");
+        student.setDateCreation(Instant.now());
         studentService.update(student);
         model.addAttribute("message", "Élève mis à jour avec succès!");
 
-        return "redirect:/students";
+        return "redirect:/home";
     }
+
 
     @GetMapping("/delete/{id}")
     public String deleteStudent(@PathVariable("id") Long id, Model model) {
@@ -78,6 +82,6 @@ public class StudentController {
         studentService.delete(id);
         model.addAttribute("message", "Élève supprimé avec succès!");
 
-        return "redirect:/students";
+        return "redirect:/home";
     }
 }

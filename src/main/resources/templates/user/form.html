@@ -1,7 +1,7 @@
 <div th:fragment="form-user" class="professeur" id="form-user" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="add-form-top">
         <span class="closemodal" onclick="showSection(event, 'page-utilisateur')">< Retour</span>
-        <h2>Ajouter un Professeur</h2>
+        <h2>Ajouter un Utilisateur</h2>
     </div>
     <form th:action="@{/users}" th:object="${user}" method="post" class="form-add">
         <div class="form-container">

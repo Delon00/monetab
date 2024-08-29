@@ -24,8 +24,19 @@
             <p th:text="${teacher.vacant} ? 'Oui' : 'Non'"></p>
             <p th:text="${teacher.age}"></p>
             <p th:text="${teacher.tel}"></p>
-            <button type="button" onclick="openmodify()">Modifier</button>
-            <button type="button" onclick="opendelete()">Supprimer</button>
+            <button type="button" th:onclick="'openModifyTeacher(' + ${teacher.id} + ')'">Modifier</button>
+            <button type="button" th:onclick="'openDeleteTeacher(' + ${teacher.id} + ')'">Supprimer</button>
+        </div>
+
+        <div class="delete-modal">
+            <div class="delete-modal-content">
+                <h2>Attention!!!</h2>
+                <p>Voulez vous vraiment supprimer cet élève</p>
+                <div class="flex">
+                    <button class="modal-btn-delete non" type="button" onclick="closedelete()">Non</button>
+                    <button class="modal-btn-delete oui" type="button" onclick="closedelete()">Oui</button>
+                </div>
+            </div>
         </div>
     </div>
     <script th:src="@{/js/js.js}"></script>

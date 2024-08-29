@@ -25,29 +25,21 @@ function loadSection(section) {
     let sectionUrl = '';
     console.log(section)
     switch (section) {
-        case 'page-dash':
-            sectionUrl = 'dashboard';
+        case 'page-dash':sectionUrl = 'dashboard';
             break;
-        case 'page-eleve':
-            sectionUrl = 'students';
+        case 'page-eleve':sectionUrl = 'students';
             break;
-        case 'page-professeur':
-            sectionUrl = 'teachers';
+        case 'page-professeur':sectionUrl = 'teachers';
             break;
-        case 'form-professeur':
-             sectionUrl = 'teachers/formTeacher';
+        case 'form-professeur':sectionUrl = 'teachers/formTeacher';
              break;
-        case 'form-eleve':
-              sectionUrl = 'students/formStudent';
+        case 'form-eleve':sectionUrl = 'students/formStudent';
                break;
-        case 'form-user':
-               sectionUrl = 'users/formUser';
+        case 'form-user':sectionUrl = 'users/formUser';
                break;
-        case 'page-utilisateur':
-            sectionUrl = 'users';
+        case 'page-utilisateur':sectionUrl = 'users';
             break;
-        case 'page-rapport':
-            sectionUrl = 'rapports';
+        case 'page-rapport':sectionUrl = 'reports';
             break;
         default:
             sectionUrl = '';
@@ -70,29 +62,83 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-function openmodal() {
-    var menuEleve = document.querySelector('.menu-eleve');
-    menuEleve.style.display = 'block';
-}
-function closemodal() {
-    var menuEleve = document.querySelector('.menu-eleve');
-    menuEleve.style.display = 'none';
-}
 
-function openmodify() {
-    var menuEleve = document.querySelector('.menu-eleve-modify');
-    menuEleve.style.display = 'block';
-}
-function closemodify() {
-    var menuEleve = document.querySelector('.menu-eleve-modify');
-    menuEleve.style.display = 'none';
-}
 
-function opendelete() {
+function opendelete(studentId) {
     var menuEleve = document.querySelector('.delete-modal');
     menuEleve.style.display = 'flex';
+    document.querySelector('.modal-btn-delete.oui').setAttribute('onclick', `deleteStudent(${studentId})`);
 }
-function closedelete() {
+function openDeleteTeacher(teacherId) {
     var menuEleve = document.querySelector('.delete-modal');
-    menuEleve.style.display = 'none';
+    menuEleve.style.display = 'flex';
+    document.querySelector('.modal-btn-delete.oui').setAttribute('onclick', `deleteTeacher(${teacherId})`);
+}
+function openDeleteUser(userId) {
+    var menuEleve = document.querySelector('.delete-modal');
+    menuEleve.style.display = 'flex';
+    document.querySelector('.modal-btn-delete.oui').setAttribute('onclick', `deleteUser(${userId})`);
+}
+
+function closedelete() {var menuEleve = document.querySelector('.delete-modal');menuEleve.style.display = 'none';}
+
+function deleteStudent(studentId) {
+    fetch('/students/delete/' + studentId)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+            showSection(event, 'page-eleve');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function deleteTeacher(teacherId) {
+    fetch('/teachers/delete/' + teacherId)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+            showSection(event, 'page-professeur');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function deleteTeacher(userId) {
+    fetch('/users/delete/' + userId)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+            showSection(event, 'page-utilisateur');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+function openModify(id) {
+    fetch('/students/modify/' + id)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+            showSection(event, 'form-eleve-modify');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function openModifyTeacher(id) {
+    fetch('/teachers/modify/' + id)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+            showSection(event, 'form-teacher-modify');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function openModifyUser(id) {
+    fetch('/users/modify/' + id)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('main-content').innerHTML = html;
+            showSection(event, 'form-user-modify');
+        })
+        .catch(error => console.error('Error:', error));
 }

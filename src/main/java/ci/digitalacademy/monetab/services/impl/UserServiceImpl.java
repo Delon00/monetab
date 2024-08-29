@@ -2,6 +2,8 @@ package ci.digitalacademy.monetab.services.impl;
 
 import ci.digitalacademy.monetab.models.User;
 import ci.digitalacademy.monetab.repository.UserRepository;
+import ci.digitalacademy.monetab.services.DTO.UserDTO;
+import ci.digitalacademy.monetab.services.Mapper.UserMapper;
 import ci.digitalacademy.monetab.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +19,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    //private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
-
+    private final UserMapper userMapper;
+    
     @Override
     public User save(User user) {
         return userRepository.save(user);
@@ -38,6 +39,16 @@ public class UserServiceImpl implements UserService {
                         ("L'utilisateur avec cet id n'a pas été retrouvé " + user.getId()));
     }
 
+
+    @Override
+    public UserDTO save(UserDTO user) {
+        return null;
+    }
+
+    @Override
+    public UserDTO update(UserDTO user) {
+        return null;
+    }
 
     @Override
     public Optional<User> findOne(Long id) {

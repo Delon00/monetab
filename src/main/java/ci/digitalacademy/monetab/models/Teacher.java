@@ -18,7 +18,7 @@ public class Teacher extends Person {
     private String matiere;
 
     @Column(nullable = false)
-    private Boolean vacant;
+    private boolean vacant;
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "teacher")
     private Set<FicheNote> ficheNote;

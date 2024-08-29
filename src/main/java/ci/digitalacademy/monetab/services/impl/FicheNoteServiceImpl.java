@@ -2,6 +2,7 @@ package ci.digitalacademy.monetab.services.impl;
 
 import ci.digitalacademy.monetab.models.FicheNote;
 import ci.digitalacademy.monetab.repository.FicheNoteRepository;
+import ci.digitalacademy.monetab.services.DTO.FicheNoteDTO;
 import ci.digitalacademy.monetab.services.FicheNoteService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,16 @@ public class FicheNoteServiceImpl implements FicheNoteService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException
                         ("Aucune fiche de note avec cet id n'a été retrouvée " + ficheNote.getId()));
+    }
+
+    @Override
+    public FicheNoteDTO save(FicheNoteDTO ficheNote) {
+        return null;
+    }
+
+    @Override
+    public FicheNoteDTO update(FicheNoteDTO ficheNote) {
+        return null;
     }
 
     @Override
